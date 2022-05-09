@@ -1,7 +1,9 @@
 <meta charset="UTF-8">
 <?php
 
-$link = mysql_connect('d411bcb93a96','test','test');
+date_default_timezone_set("Asia/Tokyo");//.dateを使用するために設定する必要がある
+
+$link = mysql_connect('66f0b9f1dd5f','test','test');//(接続先DBホスト名,DB名,PASS)
 if(!$link) {
     die('データベースに接続できません:' . mysql_error());
 }
@@ -30,37 +32,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $comment = $_POST['comment'];
     }
 
-    $date = date_default_timezone_set('Y-m-d');
-
     if (count($errors) === 0) {
-        $sql = "insert into `post` (`name`, `comment`, `created_at`) values('"
-            .mysql_real_escape_string($name) . "','"
-            .mysql_real_escape_string($comment) . "','"
-            .date_default_timezone_set('Y-m-d H:i:s') . "')";
+        $sql = "insert into `post` (`name`, `comment`, `create_at`) values('"
+            .mysql_real_escape_string($name)."','"
+            .mysql_real_escape_string($comment)."','"
+            .date('Y-m-d H:i:s')."')";
 
-            mysql_query($sql,$link);
+            mysql_query($sql,$link);//sql実行関数
+            // mysql_close($link);
+            // header('Location: http://' .$_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
     }
+
 }
+    $sql = "select * from `post` order by `create_at` desc";
+    $result = mysql_query($sql,$link);
 
+    $posts = array();
+    if($result !== false && mysql_num_rows($result)) {
+        while($post = mysql_fetch_assoc($result)){
+            $posts[] = $post;
+        }
+    }
+
+    mysql_free_result($result);
+    mysql_close($link);
+
+    include 'views/index-6-4_view.php';
 ?>
-
-
-
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ひとことけいじばん</title>
-</head>
-<body>
-  <h1>ひとこと掲示板</h1>
-  <?php echo $date; ?>
-  <form action="index-6-4.php" method="POST">
-    名前:<input type="text" name="name"><br>
-    ひとこと<input type="text" name="comment" size="60"><br>
-    <input type="submit" value="送信">
-  </form>
-</body>
-</html>
