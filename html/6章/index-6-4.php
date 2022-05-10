@@ -3,7 +3,8 @@
 
 date_default_timezone_set("Asia/Tokyo");//.dateを使用するために設定する必要がある
 
-$link = mysql_connect('66f0b9f1dd5f','test','test');//(接続先DBホスト名,DB名,PASS)
+$link = mysql_connect('01022beb1cbf','test','test');//(接続先DBホスト名,DB名,PASS)
+//ホスト名確認->select @@hostname;
 if(!$link) {
     die('データベースに接続できません:' . mysql_error());
 }
