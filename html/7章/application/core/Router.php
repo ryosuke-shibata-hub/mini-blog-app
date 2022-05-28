@@ -39,7 +39,7 @@ Class Router
             if(preg_match('#^' . $pattern . '$#',$path_info,$macthes)) {
                 $params = array_merge($params,$macthes);
 
-                return $params
+                return $params;
             }
         }
 
