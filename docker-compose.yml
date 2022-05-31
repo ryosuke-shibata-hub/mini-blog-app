@@ -5,7 +5,7 @@ services:
     image: php:5.3-apache
     volumes:
       - ./php.ini:/usr/local/etc/php/php.ini
-      - ./html:/var/www/html
+      - ./web:/var/www/web
     ports:
       - 8080:80
   mysql:
@@ -14,16 +14,18 @@ services:
       - ./mysql:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=test
-      - MYSQL_USER=test
-      - MYSQL_PASSWORD=test
+      - MYSQL_DATABASE=mini-blog
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+    ports:
+      - "4306:3306"
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     environment:
       - PMA_ARBITRARY=1
       - PMA_HOST=mysql
-      - PMA_USER=test
-      - PMA_PASSWORD=test
+      - PMA_USER=root
+      - PMA_PASSWORD=root
     links:
       - mysql
     ports:
